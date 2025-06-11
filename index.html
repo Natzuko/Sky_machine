@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Control Stellarium</title>
+
+    <!--Google Fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Manrope:wght@200..800&family=Orbitron:wght@400..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!--link a Css-->
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Geolocalización Stellarium</h1>
+
+      <!-- Botón para GPS real -->
+      <button id="realLocation" class="btn btn-primary">
+        Usar mi ubicación real
+      </button>
+
+      <!-- Input manual -->
+      <div class="input-group">
+        <input type="text" id="lat" placeholder="Latitud" class="input-field" />
+        <input
+          type="text"
+          id="lon"
+          placeholder="Longitud"
+          class="input-field"
+        />
+        <input
+          type="text"
+          id="alt"
+          placeholder="Altitud (opcional)"
+          class="input-field"
+        />
+        <button id="sendManual" class="btn btn-secondary">Enviar</button>
+      </div>
+
+      <!-- Estado y coordenadas -->
+      <div id="status" class="status">Esperando conexión...</div>
+      <div id="coordinates" class="coordinates"></div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

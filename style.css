@@ -1,0 +1,101 @@
+/* palette colours: 0D1321, 1D2D44, 3E5C76, 748CAB, F0EBD8 */
+/* Google Fonts */
+.orbitron {
+  font-family: "Orbitron", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: weight;
+  font-style: normal;
+}
+
+.ibm-plex-sans {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: weight;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+
+body {
+    font-family: 'IBM+Plex+Sans', sans-serif;    
+    color: #F0EBD8;
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    background-color: #0D1321;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+h1 {
+    font-family: 'Orbitron', sans-serif;
+    color: #F0EBD8;
+    margin-bottom: 30px;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 10px;
+    transition: all 0.3s;
+    font-family: 'IBM+Plex+Sans', sans-serif;
+}
+
+.btn-primary {
+    background: #F0EBD8;
+    color: #0D1321;
+    font-family: 'IBM+Plex+Sans', sans-serif;
+}
+
+.btn-primary:hover {
+    background: #F0EBD8;
+    transform: translateY(-2px);
+    font-family: 'IBM+Plex+Sans', sans-serif;
+}
+
+.btn-secondary {
+    background: transparent;
+    color: #F0EBD8;
+    border: 1px solid #F0EBD8;
+}
+
+.btn-secondary:hover {
+    background: rgba(0, 212, 255, 0.1);
+}
+
+.input-group {
+    margin: 20px 0;
+    color: #F0EBD8;
+    font-family: 'IBM+Plex+Sans', sans-serif;
+}
+
+.input-field {
+    padding: 10px;
+    margin: 5px;
+    width: 100px;
+    border: 1px solid #3E5C76;
+    border-radius: 5px;
+    color: #0D1321;
+    font-family: 'IBM+Plex+Sans', sans-serif;
+}
+
+.status {
+    margin: 20px 0;
+    padding: 10px;
+    border-radius: 5px;    
+}
+
+.coordinates {
+    font-family: 'Orbitron', sans-serif;
+    background: #F0EBD8;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
