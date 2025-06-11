@@ -10,92 +10,107 @@
 .ibm-plex-sans {
   font-family: "IBM Plex Sans", sans-serif;
   font-optical-sizing: auto;
-  font-weight: weight;
+  font-weight: 400;
   font-style: normal;
-  font-variation-settings:
-    "wdth" 100;
+  /*font-variation-settings: "wdth" 100;*/
 }
 
+.ibm-plex-mono-regular {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.manrope {
+  font-family: "Manrope", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+
 body {
-    font-family: 'IBM+Plex+Sans', sans-serif;    
-    color: #F0EBD8;
-    margin: 0;
-    padding: 20px;
-    min-height: 100vh;
-    background-color: #0D1321;
+  font-family: "Manrope", sans-serif;
+  color: #f0ebd8;
+  margin: 0;
+  padding: 20px;
+  min-height: 100vh;
+  background-color: #0d1321;
 }
 
 .container {
-    max-width: 600px;
-    margin: 0 auto;
-    text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
 }
 
 h1 {
-    font-family: 'Orbitron', sans-serif;
-    color: #F0EBD8;
-    margin-bottom: 30px;
+  font-family: "Orbitron", sans-serif;
+  color: #f0ebd8;
+  margin-bottom: 30px;
 }
 
 .btn {
-    padding: 12px 24px;
-    border: none;
-    border-radius: 50px;
-    font-size: 16px;
-    cursor: pointer;
-    margin: 10px;
-    transition: all 0.3s;
-    font-family: 'IBM+Plex+Sans', sans-serif;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 50px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 10px;
+  transition: all 0.3s;
+  font-family: "Manrope", sans-serif;
 }
 
 .btn-primary {
-    background: #F0EBD8;
-    color: #0D1321;
-    font-family: 'IBM+Plex+Sans', sans-serif;
+  background: #f0ebd8;
+  color: #0d1321;
+  font-family: "Manrope", sans-serif;
 }
 
 .btn-primary:hover {
-    background: #F0EBD8;
-    transform: translateY(-2px);
-    font-family: 'IBM+Plex+Sans', sans-serif;
+  background: #f0ebd8;
+  transform: translateY(-2px);
+  font-family: "Manrope", sans-serif;
 }
 
 .btn-secondary {
-    background: transparent;
-    color: #F0EBD8;
-    border: 1px solid #F0EBD8;
+  background: transparent;
+  color: #f0ebd8;
+  border: 1px solid #f0ebd8;
 }
 
 .btn-secondary:hover {
-    background: rgba(0, 212, 255, 0.1);
+  background: rgba(0, 212, 255, 0.1);
 }
 
 .input-group {
-    margin: 20px 0;
-    color: #F0EBD8;
-    font-family: 'IBM+Plex+Sans', sans-serif;
+  margin: 20px 0;
+  color: #f0ebd8;
+  font-family: "Manrope", sans-serif;
 }
 
 .input-field {
-    padding: 10px;
-    margin: 5px;
-    width: 100px;
-    border: 1px solid #3E5C76;
-    border-radius: 5px;
-    color: #0D1321;
-    font-family: 'IBM+Plex+Sans', sans-serif;
+  padding: 10px;
+  margin: 5px;
+  width: 100px;
+  border: 1px solid #3e5c76;
+  border-radius: 5px;
+  color: #0d1321;
+  background-color: #f0ebd8;
+  font-family: "Manrope", sans-serif;
 }
 
 .status {
-    margin: 20px 0;
-    padding: 10px;
-    border-radius: 5px;    
+  margin: 20px 0;
+  padding: 10px;
+  border-radius: 5px;
 }
 
 .coordinates {
-    font-family: 'Orbitron', sans-serif;
-    background: #F0EBD8;
-    padding: 15px;
-    border-radius: 10px;
-    margin-top: 20px;
+  font-family: "Orbitron", sans-serif;
+  background: #f0ebd8;
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 20px;
 }
