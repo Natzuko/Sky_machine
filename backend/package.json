@@ -2,17 +2,15 @@
   "name": "sky-machine-backend",
   "version": "1.0.0",
   "main": "server.js",
+  "license": "MIT",
   "scripts": {
-    "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js"
   },
   "dependencies": {
     "express": "^4.18.2",
     "ws": "^8.13.0"
   },
   "engines": {
-    "node": "18.x"
+    "node": "20.x"  // Versión LTS actual (cambia de 18.x a 20.x)
   }
 }
-
-"license": "MIT"
