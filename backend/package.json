@@ -11,6 +11,6 @@
     "ws": "^8.13.0"
   },
   "engines": {
-    "node": "20.x"  // Versión LTS actual (cambia de 18.x a 20.x)
+    "node": "20.x"
   }
 }
