@@ -1,5 +1,5 @@
 // Conexión WebSocket
-const socket = new WebSocket("wss://tu-backend-en-render.com/ws");
+const socket = new WebSocket("wss://sky-machine-backend.onrender.com");
 
 // Elementos del DOM
 const realLocationBtn = document.getElementById("realLocation");
