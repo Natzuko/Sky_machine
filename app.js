@@ -1,5 +1,4 @@
-// Conexión WebSocket
-const socket = new WebSocket('wss://sky-machine-backend.onrender.com');
+const socket = new WebSocket('wss://sky-machine-backend.onrender.com/ws');
 const statusDiv = document.getElementById('status');
 const coordinatesDiv = document.getElementById('coordinates');
 
@@ -15,31 +14,20 @@ socket.onerror = (error) => {
     console.error("Error en WebSocket:", error);
 };
 
-// Función mejorada para enviar coordenadas
-function sendCoords(lat, lon, alt = 0) {
-    // Validación básica
-    if (isNaN(lat) || isNaN(lon)) {
-        alert("Latitud y longitud deben ser números válidos");
-        return false;
-    }
-
-    // Convertir a números (por si vienen como strings)
-    const latNum = Number(lat);
-    const lonNum = Number(lon);
-    const altNum = Number(alt) || 0;
-
+// Función mejorada para enviar coordenadas (formato compatible con TD)
+function sendToBackend(lat, lon, alt = 0) {
     if (socket.readyState === WebSocket.OPEN) {
-        socket.send(JSON.stringify({
-            lat: latNum,
-            lon: lonNum,
-            alt: altNum
-        }));
+        const payload = {
+            type: 'stellarium_coords',  // Identificador para TouchDesigner
+            lat: parseFloat(lat),
+            lon: parseFloat(lon),
+            alt: parseFloat(alt),
+            timestamp: new Date().toISOString()
+        };
+        socket.send(JSON.stringify(payload));
         return true;
-    } else {
-        statusDiv.textContent = "⚠️ No conectado al servidor";
-        statusDiv.style.color = "#ffcc00";
-        return false;
     }
+    return false;
 }
 
 // Enviar coordenadas MANUALES
@@ -53,13 +41,13 @@ document.getElementById('sendManual').addEventListener('click', () => {
         return;
     }
 
-    if (sendCoords(lat, lon, alt)) {
+    if (sendToBackend(lat, lon, alt)) {
         coordinatesDiv.innerHTML = `
-            <p><strong>Coordenadas enviadas:</strong></p>
-            <p>Latitud: ${lat}</p>
-            <p>Longitud: ${lon}</p>
-            <p>Altitud: ${alt}</p>
-        `;
+    <p><strong>Coordenadas enviadas:</strong></p>
+    <p>Latitud: ${lat}</p>
+    <p>Longitud: ${lon}</p>
+    <p>Altitud: ${alt}</p>
+    `;
     }
 });
 
@@ -79,49 +67,22 @@ document.getElementById('realLocation').addEventListener('click', () => {
             const lon = position.coords.longitude;
             const alt = position.coords.altitude || 0;
 
-            if (sendCoords(lat, lon, alt)) {
+            if (sendToBackend(lat, lon, alt)) {
                 coordinatesDiv.innerHTML = `
-                    <p><strong>Ubicación actual:</strong></p>
-                    <p>Latitud: ${lat.toFixed(4)}</p>
-                    <p>Longitud: ${lon.toFixed(4)}</p>
-                    <p>Altitud: ${alt ? alt.toFixed(2) + " m" : "N/A"}</p>
-                `;
+        <p><strong>Ubicación actual:</strong></p>
+        <p>Latitud: ${lat.toFixed(4)}</p>
+        <p>Longitud: ${lon.toFixed(4)}</p>
+        <p>Altitud: ${alt ? alt.toFixed(2) + " m" : "N/A"}</p>
+        `;
                 statusDiv.textContent = "✅ Ubicación enviada";
                 statusDiv.style.color = "#00ff88";
             }
         },
         (error) => {
-            let errorMessage = "Error al obtener ubicación: ";
-            switch(error.code) {
-                case error.PERMISSION_DENIED:
-                    errorMessage += "Permiso denegado";
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    errorMessage += "Ubicación no disponible";
-                    break;
-                case error.TIMEOUT:
-                    errorMessage += "Tiempo de espera agotado";
-                    break;
-                default:
-                    errorMessage += error.message;
-            }
-            alert(errorMessage);
             statusDiv.textContent = "❌ Error de geolocalización";
             statusDiv.style.color = "#ff5555";
+            alert(`Error: ${error.message}`);
         },
         { enableHighAccuracy: true, timeout: 10000 }
     );
 });
-
-// Manejar mensajes de respuesta del servidor
-socket.onmessage = (event) => {
-    try {
-        const response = JSON.parse(event.data);
-        if (response.status === 'error') {
-            console.error('Error del servidor:', response.message);
-        }
-        // Puedes agregar más lógica aquí si el servidor envía confirmaciones
-    } catch (e) {
-        console.log('Mensaje recibido:', event.data);
-    }
-};
