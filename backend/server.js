@@ -10,39 +10,60 @@ const wss = new WebSocket.Server({ server });
 wss.on('connection', (ws) => {
     console.log('✅ Nuevo cliente conectado');
 
-    // Evento para mensajes recibidos
     ws.on('message', (message) => {
         try {
-            // 1. Parsear y validar coordenadas
-            const { lat, lon, alt = 0 } = JSON.parse(message);
-            if (typeof lat !== 'number' || typeof lon !== 'number') {
-                throw new Error('Latitud y longitud deben ser números');
+            // 1. Verificar que el mensaje no esté vacío
+            if (!message || message.trim() === '') {
+                throw new Error('Mensaje vacío recibido');
             }
 
-            // 2. Generar URL de Stellarium
+            // 2. Parsear y validar coordenadas
+            const data = JSON.parse(message);
+            
+            if (!data || typeof data !== 'object') {
+                throw new Error('Formato de mensaje inválido');
+            }
+
+            const lat = parseFloat(data.lat);
+            const lon = parseFloat(data.lon);
+            const alt = parseFloat(data.alt) || 0;
+
+            if (isNaN(lat) || isNaN(lon)) {
+                throw new Error('Latitud y longitud deben ser números válidos');
+            }
+
+            // 3. Generar URL de Stellarium
             const stellariumUrl = `https://stellarium-web.org/?lat=${lat}&lon=${lon}&alt=${alt}&fov=60`;
             console.log('🌍 URL generada:', stellariumUrl);
 
-            // 3. Enviar a TODOS los clientes (incluyendo TouchDesigner)
+            // 4. Enviar solo si es una solicitud válida
             wss.clients.forEach(client => {
                 if (client.readyState === WebSocket.OPEN) {
-                    client.send(stellariumUrl);
+                    client.send(JSON.stringify({
+                        status: 'success',
+                        url: stellariumUrl,
+                        originalData: data
+                    }));
                 }
             });
 
         } catch (error) {
             console.error('❌ Error al procesar mensaje:', error.message);
-            ws.send(JSON.stringify({ error: error.message }));
+            // Enviar error al cliente específico
+            if (ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({
+                    status: 'error',
+                    message: error.message
+                }));
+            }
         }
     });
 
-    // Manejo de desconexión
     ws.on('close', () => {
         console.log('🔌 Cliente desconectado');
     });
 });
 
-// Iniciar servidor
 const PORT = process.env.PORT || 10000;
 server.listen(PORT, () => {
     console.log(`🚀 Servidor WebSocket escuchando en puerto ${PORT}`);
