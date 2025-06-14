@@ -1,41 +1,49 @@
 const express = require('express');
-const http = require('http');
 const WebSocket = require('ws');
+const http = require('http');
 
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
-// Almacena todos los clientes conectados
-const clients = new Set();
-
+// Manejo de conexiones WebSocket
 wss.on('connection', (ws) => {
-  console.log('Cliente WebSocket conectado');
-  clients.add(ws); // Agrega el cliente al conjunto
+    console.log('✅ Nuevo cliente conectado');
 
-  // Envía un mensaje de bienvenida solo al cliente nuevo
-  ws.send('Conexión WebSocket establecida');
+    // Evento para mensajes recibidos
+    ws.on('message', (message) => {
+        try {
+            // 1. Parsear y validar coordenadas
+            const { lat, lon, alt = 0 } = JSON.parse(message);
+            if (typeof lat !== 'number' || typeof lon !== 'number') {
+                throw new Error('Latitud y longitud deben ser números');
+            }
 
-  // Maneja mensajes entrantes
-  ws.on('message', (message) => {
-    console.log('Mensaje recibido:', message.toString());
+            // 2. Generar URL de Stellarium
+            const stellariumUrl = `https://stellarium-web.org/?lat=${lat}&lon=${lon}&alt=${alt}&fov=60`;
+            console.log('🌍 URL generada:', stellariumUrl);
 
-    // Retransmite el mensaje a TODOS los clientes (incluyendo al remitente)
-    clients.forEach((client) => {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(message.toString());
-      }
+            // 3. Enviar a TODOS los clientes (incluyendo TouchDesigner)
+            wss.clients.forEach(client => {
+                if (client.readyState === WebSocket.OPEN) {
+                    client.send(stellariumUrl);
+                }
+            });
+
+        } catch (error) {
+            console.error('❌ Error al procesar mensaje:', error.message);
+            ws.send(JSON.stringify({ error: error.message }));
+        }
     });
-  });
 
-  // Elimina el cliente cuando se desconecta
-  ws.on('close', () => {
-    console.log('Cliente desconectado');
-    clients.delete(ws);
-  });
+    // Manejo de desconexión
+    ws.on('close', () => {
+        console.log('🔌 Cliente desconectado');
+    });
 });
 
+// Iniciar servidor
 const PORT = process.env.PORT || 10000;
 server.listen(PORT, () => {
-  console.log(`Servidor corriendo en puerto ${PORT}`);
+    console.log(`🚀 Servidor WebSocket escuchando en puerto ${PORT}`);
 });
