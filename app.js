@@ -1,88 +1,116 @@
-const socket = new WebSocket('wss://sky-machine-backend.onrender.com/ws');
-const statusDiv = document.getElementById('status');
-const coordinatesDiv = document.getElementById('coordinates');
+document.addEventListener('DOMContentLoaded', () => {
+    // Estado de la aplicación
+    const state = {
+        ws: null,
+        connected: false,
+        locations: {
+            greenlake: 0,
+            garching: 0,
+            guereins: 0,
+            hurricane: 0,
+            jupiter: 0,
+            marte: 0,
+            neptuno: 0,
+            saturno: 0,
+            sol: 0,
+            urano: 0
+        }
+    };
 
-// Estado de conexión
-socket.onopen = () => {
-    statusDiv.textContent = "✅ Conectado al servidor";
-    statusDiv.style.color = "#00ff88";
-};
+    // Elementos del DOM
+    const elements = {
+        connectBtn: document.getElementById('connect-btn'),
+        connectionStatus: document.querySelector('.connection-status'),
+        connectionIcon: document.getElementById('connection-icon'),
+        connectionText: document.getElementById('connection-text'),
+        sliders: document.querySelectorAll('.vision-slider')
+    };
 
-socket.onerror = (error) => {
-    statusDiv.textContent = "❌ Error de conexión";
-    statusDiv.style.color = "#ff5555";
-    console.error("Error en WebSocket:", error);
-};
+    // 1. Configurar sliders
+    function setupSliders() {
+        elements.sliders.forEach(slider => {
+            const location = slider.dataset.location;
 
-// Función mejorada para enviar coordenadas (formato compatible con TD)
-function sendToBackend(lat, lon, alt = 0) {
-    if (socket.readyState === WebSocket.OPEN) {
-        const payload = {
-            type: 'stellarium_coords',  // Identificador para TouchDesigner
-            lat: parseFloat(lat),
-            lon: parseFloat(lon),
-            alt: parseFloat(alt),
-            timestamp: new Date().toISOString()
+            slider.addEventListener('input', (e) => {
+                state.locations[location] = parseInt(e.target.value);
+
+                // Actualizar interfaz
+                e.target.style.setProperty('--slider-value', `${state.locations[location]}%`);
+
+                // Enviar datos (sin debounce para respuesta inmediata)
+                if (state.connected) sendData(location);
+            });
+        });
+    }
+
+    // 2. Enviar datos al backend
+    function sendData(location) {
+        const data = {
+            type: 'skyMachineControl',
+            location: location,
+            visionValue: state.locations[location],
+            visionType: state.locations[location] > 50 ? 'nocturnal' : 'atmospheric',
+            timestamp: Date.now()
         };
-        socket.send(JSON.stringify(payload));
-        return true;
-    }
-    return false;
-}
 
-// Enviar coordenadas MANUALES
-document.getElementById('sendManual').addEventListener('click', () => {
-    const lat = document.getElementById('lat').value;
-    const lon = document.getElementById('lon').value;
-    const alt = document.getElementById('alt').value || 0;
-
-    if (!lat || !lon) {
-        alert("Ingresa latitud y longitud.");
-        return;
+        state.ws.send(JSON.stringify(data));
+        console.log('Enviado:', data); // Debug
     }
 
-    if (sendToBackend(lat, lon, alt)) {
-        coordinatesDiv.innerHTML = `
-    <p><strong>Coordenadas enviadas:</strong></p>
-    <p>Latitud: ${lat}</p>
-    <p>Longitud: ${lon}</p>
-    <p>Altitud: ${alt}</p>
-    `;
+    // 3. Gestión de WebSocket
+    function connectWebSocket() {
+        state.ws = new WebSocket('wss://sky-machine-backend.onrender.com:10000');
+
+        state.ws.onopen = () => {
+            state.connected = true;
+            updateConnectionUI();
+            console.log('Conexión establecida con el backend');
+        };
+
+        state.ws.onclose = () => {
+            state.connected = false;
+            updateConnectionUI();
+            console.log('Conexión cerrada - Intentando reconectar en 5s...');
+            setTimeout(connectWebSocket, 5000);
+        };
+
+        state.ws.onerror = (error) => {
+            console.error('Error en WebSocket:', error);
+            elements.connectionText.textContent = 'Error de conexión';
+        };
     }
-});
 
-// Enviar coordenadas AUTOMÁTICAS (geolocalización)
-document.getElementById('realLocation').addEventListener('click', () => {
-    if (!navigator.geolocation) {
-        alert("Tu navegador no soporta geolocalización.");
-        return;
+    // 4. Actualizar interfaz
+    function updateConnectionUI() {
+        if (state.connected) {
+            elements.connectionIcon.textContent = '✓';
+            elements.connectionText.textContent = 'Conectado';
+            elements.connectionStatus.classList.add('connected');
+            elements.connectionStatus.classList.remove('disconnected');
+            elements.connectBtn.textContent = 'Desconectar';
+        } else {
+            elements.connectionIcon.textContent = '✖';
+            elements.connectionText.textContent = 'Desconectado';
+            elements.connectionStatus.classList.add('disconnected');
+            elements.connectionStatus.classList.remove('connected');
+            elements.connectBtn.textContent = 'Conectar';
+        }
     }
 
-    statusDiv.textContent = "🔄 Detectando ubicación...";
-    statusDiv.style.color = "#ffcc00";
-
-    navigator.geolocation.getCurrentPosition(
-        (position) => {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-            const alt = position.coords.altitude || 0;
-
-            if (sendToBackend(lat, lon, alt)) {
-                coordinatesDiv.innerHTML = `
-        <p><strong>Ubicación actual:</strong></p>
-        <p>Latitud: ${lat.toFixed(4)}</p>
-        <p>Longitud: ${lon.toFixed(4)}</p>
-        <p>Altitud: ${alt ? alt.toFixed(2) + " m" : "N/A"}</p>
-        `;
-                statusDiv.textContent = "✅ Ubicación enviada";
-                statusDiv.style.color = "#00ff88";
+    // 5. Inicialización
+    function init() {
+        setupSliders();
+        elements.connectBtn.addEventListener('click', () => {
+            if (state.connected) {
+                state.ws.close();
+            } else {
+                connectWebSocket();
             }
-        },
-        (error) => {
-            statusDiv.textContent = "❌ Error de geolocalización";
-            statusDiv.style.color = "#ff5555";
-            alert(`Error: ${error.message}`);
-        },
-        { enableHighAccuracy: true, timeout: 10000 }
-    );
+        });
+
+        // Conectar automáticamente al cargar
+        connectWebSocket();
+    }
+
+    init();
 });

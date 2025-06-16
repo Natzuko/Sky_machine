@@ -1,118 +1,173 @@
-/* palette colours: 0D1321, 1D2D44, 3E5C76, 748CAB, F0EBD8 */
-/* Google Fonts */
-.orbitron {
-  font-family: "Orbitron", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: weight;
-  font-style: normal;
+:root {
+  --bg-color: #0D1321;
+  --card-color: #1D2D44;
+  --accent-color: #00FF88;
+  --text-color: #F0EBD8;
+  --secondary-text: #748CAB;
+  --slider-track: #3E5C76;
+  --slider-thumb: #00FF88;
+  --border-color: #2a3a4d;
 }
-
-.ibm-plex-sans {
-  font-family: "IBM Plex Sans", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-  /*font-variation-settings: "wdth" 100;*/
-}
-
-.ibm-plex-mono-regular {
-  font-family: "IBM Plex Mono", monospace;
-  font-weight: 400;
-  font-style: normal;
-}
-
-.manrope {
-  font-family: "Manrope", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-}
-
-
 
 body {
-  font-family: "Manrope", sans-serif;
-  color: #f0ebd8;
+  font-family: 'Manrope', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
   margin: 0;
   padding: 20px;
-  min-height: 100vh;
-  background-color: #0d1321;
+  line-height: 1.6;
 }
 
 .container {
-  max-width: 600px;
+  max-width: 1200px;
   margin: 0 auto;
-  text-align: center;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-color);
 }
 
 h1 {
-  font-family: "Orbitron", sans-serif;
-  color: #f0ebd8;
-  margin-bottom: 30px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin: 0;
+  font-size: 2.2rem;
+  color: var(--accent-color);
 }
 
-.btn {
-  padding: 12px 24px;
-  border: none;
-  border-radius: 50px;
-  font-size: 16px;
-  cursor: pointer;
-  margin: 10px;
-  transition: all 0.3s;
-  font-family: "Manrope", sans-serif;
+.connection-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  padding: 8px 15px;
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
-.btn-primary {
-  background: #f0ebd8;
-  color: #0d1321;
-  font-family: "Manrope", sans-serif;
+.connection-status.connected {
+  color: var(--accent-color);
 }
 
-.btn-primary:hover {
-  background: #f0ebd8;
-  transform: translateY(-2px);
-  font-family: "Manrope", sans-serif;
+.connection-status.connected #connection-icon {
+  color: var(--accent-color);
 }
 
-.btn-secondary {
-  background: transparent;
-  color: #f0ebd8;
-  border: 1px solid #f0ebd8;
+.connection-status.disconnected {
+  color: #FF5252;
 }
 
-.btn-secondary:hover {
-  background: rgba(0, 212, 255, 0.1);
+.location-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
 }
 
-.input-group {
-  margin: 20px 0;
-  color: #f0ebd8;
-  font-family: "Manrope", sans-serif;
+.location-card {
+  background-color: var(--card-color);
+  border-radius: 8px;
+  padding: 20px;
+  transition: all 0.3s ease;
+  border: 1px solid var(--border-color);
 }
 
-.input-field {
-  padding: 10px;
-  margin: 5px;
-  width: 100px;
-  border: 1px solid #3e5c76;
-  border-radius: 5px;
-  color: #0d1321;
-  background-color: #f0ebd8;
-  font-family: "Manrope", sans-serif;
+.location-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-.status {
-  margin: 20px 0;
-  padding: 10px;
-  border-radius: 5px;
-  color: #0d1321;
+.location-card h2 {
+  margin: 0 0 10px 0;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .coordinates {
-  font-family: "Orbitron", sans-serif;
-  background: #f0ebd8;
-  color: #0d1321;
-  padding: 15px;
-  border-radius: 10px;
-  margin-top: 20px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--secondary-text);
+  margin-bottom: 20px;
+  letter-spacing: 0.5px;
+}
+
+.vision-control {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.vision-control span {
+  font-size: 0.85rem;
+  width: 80px;
+  text-align: center;
+  color: var(--secondary-text);
+}
+
+.vision-slider {
+  --slider-value: 0%;
+  background: linear-gradient(
+    to right,
+    var(--accent-color) 0%,
+    var(--accent-color) var(--slider-value),
+    var(--slider-track) var(--slider-value),
+    var(--slider-track) 100%
+  );
+}
+
+.vision-slider:hover {
+  background: #4a6b8a;
+}
+
+.vision-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  background: var(--slider-thumb);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.vision-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+
+.connection-panel {
+  text-align: center;
+  margin-top: 40px;
+}
+
+#connect-btn {
+  background-color: var(--accent-color);
+  color: var(--bg-color);
+  border: none;
+  padding: 12px 30px;
+  border-radius: 4px;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+#connect-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
+}
+
+/* Efecto para tarjetas de planetas */
+.location-card:nth-child(n+5) {
+  border: 1px solid rgba(116, 140, 171, 0.3);
 }

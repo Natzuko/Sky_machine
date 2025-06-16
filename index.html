@@ -1,76 +1,133 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Control Stellarium</title>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>sky-machine</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Manrope:wght@300..800&family=IBM+Plex+Mono:wght@300&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>sky-machine</h1>
+      <div class="connection-status">
+        <span id="connection-icon">✖</span>
+        <span id="connection-text">Desconectado</span>
+      </div>
+    </header>
 
-    <!--Google Fonts-->
-    <!--IBM-Plex-Sans-->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap"
-      rel="stylesheet"
-    />
-    <!--IBM-Plex-Mono-->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
-      rel="stylesheet"
-    />
-    <!--IBM-Manrope-->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap"
-      rel="stylesheet"
-    />
+    <main>
+      <div class="location-grid">
+        <!-- Ubicaciones Terrestres -->
+        <div class="location-card">
+          <h2>Greenlake, Seattle</h2>
+          <div class="coordinates">+47°40'06.99", -123°39'15.99", 20 m</div>
+          <div class="vision-control">
+            <span>Atmosférica</span>
+            <input type="range" class="vision-slider" data-location="greenlake" min="0" max="100" value="0">
+            <span>Nocturna</span>
+          </div>
+        </div>
 
-    <!--Orbitron-->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap"
-      rel="stylesheet"
-    />
+        <div class="location-card">
+          <h2>ESO, Alemania</h2>
+          <div class="coordinates">+48°15'35.99", +11°40'15", 443 m</div>
+          <div class="vision-control">
+            <span>Atmosférica</span>
+            <input type="range" class="vision-slider" data-location="garching" min="0" max="100" value="0">
+            <span>Nocturna</span>
+          </div>
+        </div>
 
-    <!--link a Css-->
-    <link rel="stylesheet" href="/style.css" />
-  </head>
-  <body>
-    <div class="container">
-      <h1>Geolocalización Stellarium</h1>
+        <div class="location-card">
+          <h2>Guéreins, Francia</h2>
+          <div class="coordinates">+46°6'31", +4°46'49.00", 83 m</div>
+          <div class="vision-control">
+            <span>Atmosférica</span>
+            <input type="range" class="vision-slider" data-location="guereins" min="0" max="100" value="0">
+            <span>Nocturna</span>
+          </div>
+        </div>
 
-      <!-- Botón para GPS real -->
-      <button id="realLocation" class="btn btn-primary">
-        Usar mi ubicación real
-      </button>
+        <div class="location-card">
+          <h2>Hurricane Ridge, WA</h2>
+          <div class="coordinates">+47°40'44", -123°30'41", 1597 m</div>
+          <div class="vision-control">
+            <span>Atmosférica</span>
+            <input type="range" class="vision-slider" data-location="hurricane" min="0" max="100" value="0">
+            <span>Nocturna</span>
+          </div>
+        </div>
 
-      <!-- Input manual -->
-      <div class="input-group">
-        <input type="text" id="lat" placeholder="Latitud" class="input-field" />
-        <input
-          type="text"
-          id="lon"
-          placeholder="Longitud"
-          class="input-field"
-        />
-        <input
-          type="text"
-          id="alt"
-          placeholder="Altitud (opcional)"
-          class="input-field"
-        />
-        <button id="sendManual" class="btn btn-secondary">Enviar</button>
+        <!-- Planetas y Cuerpos Celestes -->
+        <div class="location-card">
+          <h2>Júpiter</h2>
+          <div class="coordinates">+8°16'27", +16°26'18", 1 m</div>
+          <div class="vision-control">
+            <span>Atmosférica</span>
+            <input type="range" class="vision-slider" data-location="jupiter" min="0" max="100" value="0">
+            <span>Nocturna</span>
+          </div>
+        </div>
+
+        <div class="location-card">
+          <h2>Marte (Spirit Rover)</h2>
+          <div class="coordinates">-14°48', +175°24', -1885 m</div>
+          <div class="vision-control">
+            <span>Atmosférica</span>
+            <input type="range" class="vision-slider" data-location="marte" min="0" max="100" value="0">
+            <span>Nocturna</span>
+          </div>
+        </div>
+
+        <div class="location-card">
+          <h2>Neptuno</h2>
+          <div class="coordinates">+8°16'27", +16°26'18", 1 m</div>
+          <div class="vision-control">
+            <span>Atmosférica</span>
+            <input type="range" class="vision-slider" data-location="neptuno" min="0" max="100" value="0">
+            <span>Nocturna</span>
+          </div>
+        </div>
+
+        <div class="location-card">
+          <h2>Saturno</h2>
+          <div class="coordinates">+8°16'27", +16°26'18", 1 m</div>
+          <div class="vision-control">
+            <span>Atmosférica</span>
+            <input type="range" class="vision-slider" data-location="saturno" min="0" max="100" value="0">
+            <span>Nocturna</span>
+          </div>
+        </div>
+
+        <div class="location-card">
+          <h2>Sol</h2>
+          <div class="coordinates">+8°16'27", +16°26'18", 1 m</div>
+          <div class="vision-control">
+            <span>Atmosférica</span>
+            <input type="range" class="vision-slider" data-location="sol" min="0" max="100" value="0">
+            <span>Nocturna</span>
+          </div>
+        </div>
+
+        <div class="location-card">
+          <h2>Urano</h2>
+          <div class="coordinates">+8°16'27", +16°26'18", 1 m</div>
+          <div class="vision-control">
+            <span>Atmosférica</span>
+            <input type="range" class="vision-slider" data-location="urano" min="0" max="100" value="0">
+            <span>Nocturna</span>
+          </div>
+        </div>
       </div>
 
-      <!-- Estado y coordenadas -->
-      <div id="status" class="status">Esperando conexión...</div>
-      <div id="coordinates" class="coordinates"></div>
-    </div>
+      <div class="connection-panel">
+        <button id="connect-btn">Conectar a sky-machine</button>
+      </div>
+    </main>
+  </div>
 
-    <script src="app.js"></script>
-  </body>
+  <script src="app.js"></script>
+</body>
 </html>
