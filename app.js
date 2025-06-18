@@ -59,7 +59,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 3. Gestión de WebSocket
     function connectWebSocket() {
-        state.ws = new WebSocket('wss://sky-machine-backend.onrender.com:10000');
+        //state.ws = new WebSocket('wss://sky-machine-backend.onrender.com:10000');       verificar sin el puerto esta ok
+        state.ws = new WebSocket('wss://sky-machine-backend.onrender.com');
 
         state.ws.onopen = () => {
             state.connected = true;
