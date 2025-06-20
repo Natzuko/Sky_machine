@@ -22,8 +22,12 @@ wss.on('connection', (ws) => {
             const data = JSON.parse(message);
             console.log('Datos recibidos:', data);
 
-            // Aquí simplemente registramos los datos
-            // Tú luego podrás conectar TouchDesigner a este backend
+            // 🔁 Reenviar (broadcast) el mensaje a todos los demás clientes conectados
+            wss.clients.forEach(client => {
+                if (client !== ws && client.readyState === WebSocket.OPEN) {
+                    client.send(JSON.stringify(data));
+                }
+            });
 
         } catch (error) {
             console.error('Error procesando mensaje:', error);
