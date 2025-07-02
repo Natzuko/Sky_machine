@@ -22,7 +22,7 @@ wss.on('connection', (ws) => {
             const data = JSON.parse(message);
             console.log('Datos recibidos:', data);
 
-            // 🔁 Reenviar (broadcast) el mensaje a todos los demás clientes conectados
+            // 🔁 Broadcast 
             wss.clients.forEach(client => {
                 if (client !== ws && client.readyState === WebSocket.OPEN) {
                     client.send(JSON.stringify(data));

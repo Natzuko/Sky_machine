@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Estado de la aplicación
+    // Estado de la aplicación (sin planetas)
     const state = {
         ws: null,
         connected: false,
@@ -7,13 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
             greenlake: 0,
             garching: 0,
             guereins: 0,
-            hurricane: 0,
-            jupiter: 0,
-            marte: 0,
-            neptuno: 0,
-            saturno: 0,
-            sol: 0,
-            urano: 0
+            hurricane: 0
         }
     };
 
@@ -26,24 +20,23 @@ document.addEventListener('DOMContentLoaded', () => {
         sliders: document.querySelectorAll('.vision-slider')
     };
 
-    // 1. Configurar sliders
+    // 1. Configurar sliders rojo 
     function setupSliders() {
         elements.sliders.forEach(slider => {
             const location = slider.dataset.location;
+            
+            // Inicializar el valor visual
+            slider.style.setProperty('--slider-value', `${state.locations[location]}%`);
 
             slider.addEventListener('input', (e) => {
                 state.locations[location] = parseInt(e.target.value);
-
-                // Actualizar interfaz
                 e.target.style.setProperty('--slider-value', `${state.locations[location]}%`);
-
-                // Enviar datos (sin debounce para respuesta inmediata)
                 if (state.connected) sendData(location);
             });
         });
     }
 
-    // 2. Enviar datos al backend
+    // 2. Enviar datos al backend 
     function sendData(location) {
         const data = {
             type: 'skyMachineControl',
@@ -54,12 +47,11 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         state.ws.send(JSON.stringify(data));
-        console.log('Enviado:', data); // Debug
+        console.log('Enviado:', data);
     }
 
-    // 3. Gestión de WebSocket
+    // 3. Gestión de WebSocket 
     function connectWebSocket() {
-        //state.ws = new WebSocket('wss://sky-machine-backend.onrender.com:10000');       verificar sin el puerto esta ok
         state.ws = new WebSocket('wss://sky-machine-backend.onrender.com');
 
         state.ws.onopen = () => {
@@ -81,16 +73,16 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
-    // 4. Actualizar interfaz
+    // 4. Actualizar interfaz (ajustes visuales)
     function updateConnectionUI() {
         if (state.connected) {
-            elements.connectionIcon.textContent = '✓';
+            elements.connectionIcon.textContent = '';
             elements.connectionText.textContent = 'Conectado';
             elements.connectionStatus.classList.add('connected');
             elements.connectionStatus.classList.remove('disconnected');
             elements.connectBtn.textContent = 'Desconectar';
         } else {
-            elements.connectionIcon.textContent = '✖';
+            elements.connectionIcon.textContent = '';
             elements.connectionText.textContent = 'Desconectado';
             elements.connectionStatus.classList.add('disconnected');
             elements.connectionStatus.classList.remove('connected');
@@ -109,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Conectar automáticamente al cargar
+        // Conexión automática 
         connectWebSocket();
     }
 
