@@ -63,13 +63,18 @@ h1 {
 }
 
 .connection-status.connected {
-  color: var(--accent-color); /* naranja */
+  color: var(--accent-color);
+
 }
 
 .connection-status.disconnected {
-  color: #FF5252; /* rojo */
+  color: #FF5252;
+  /* rojo */
 }
 
+h2.sat {
+  color: var(--accent-color);
+}
 .location-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -143,24 +148,20 @@ h1 {
   width: 100%;
   height: 6px;
   cursor: pointer;
-  background: linear-gradient(
-    to right,
-    var(--accent-color) 0%,
-    var(--accent-color) var(--slider-value),
-    transparent var(--slider-value),
-    transparent 100%
-  );
+  background: linear-gradient(to right,
+      var(--accent-color) 0%,
+      var(--accent-color) var(--slider-value),
+      transparent var(--slider-value),
+      transparent 100%);
   border-radius: 3px;
 }
 
 .vision-slider:hover::-webkit-slider-runnable-track {
-  background: linear-gradient(
-    to right,
-    var(--accent-color) 0%,
-    var(--accent-color) var(--slider-value),
-    var(--text-color) var(--slider-value),
-    var(--text-color) 100%
-  );
+  background: linear-gradient(to right,
+      var(--accent-color) 0%,
+      var(--accent-color) var(--slider-value),
+      var(--text-color) var(--slider-value),
+      var(--text-color) 100%);
 }
 
 .vision-slider::-webkit-slider-thumb:hover {
@@ -196,4 +197,86 @@ h1 {
 
 .location-card:nth-child(n+5) {
   border: 1px solid rgba(116, 140, 171, 0.3);
+}
+
+@media screen and (max-width: 768px) {
+  .subtitle {
+    font-size: 1rem;
+    white-space: nowrap;
+  }
+
+  /* Opcional: también podrías ajustar el header para móviles */
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .connection-status {
+    margin-top: 10px;
+    align-self: flex-end;
+  }
+}
+
+/* SOLO para pantallas grandes (≥ 1155px de ancho) */
+@media screen and (min-width: 1155px) {
+  .location-grid {
+    grid-template-columns: repeat(2, 1fr); /* Fuerza 2 columnas */
+    max-width: 900px; /* Limita el ancho para evitar que crezcan demasiado */
+    margin: 0 auto 40px; /* Centrado */
+  }
+}
+
+.credits {
+  font-family: 'Manrope', sans-serif;
+  text-align: center;
+  color: var(--text-color);
+  margin-top: 60px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+.acknowledgments p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: 0 auto;
+  max-width: 600px;
+}
+
+.developer-links p {
+  font-size: 0.9rem;
+  margin-top: 15px;
+  color: var(--secondary-text);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.developer-links a {
+  color: var(--accent-color);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+}
+
+.developer-links a:hover {
+  opacity: 0.9;
+  text-decoration: underline;
+  background-color: rgba(255, 75, 1, 0.1); /* Fondo sutil al hover */
+}
+
+.github-icon {
+  width: 1.1em;
+  height: 1.1em;
+  fill: currentColor;
+  transition: transform 0.2s ease;
+}
+
+.github-link:hover .github-icon {
+  transform: scale(1.1);
 }
