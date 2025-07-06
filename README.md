@@ -30,3 +30,8 @@ No hay en esta obra una utopía del cosmos, sino un testimonio latente de su ins
 ## 🌐 Project overview (English)
 
 *Centinela: Sky-Machine* is an interactive installation developed in TouchDesigner that explores the long-term legacy of Earth’s orbital satellites. Based on the idea that these devices will outlast human civilization, the work transforms simulated satellite trajectories into a critical visual and sonic archive. Rather than celebrating space exploration, the piece reflects on orbital infrastructure as a geopolitical residue — what remains when nothing else does.
+
+## 📄 Documentación adicional
+
+- [📥 Descargar statement en PDF](./CENTINELA_SKY_MACHINE.pdf)
+  
